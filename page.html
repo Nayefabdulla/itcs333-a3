@@ -9,16 +9,20 @@
 </head>
 <body>
   <script>
+    // This function fetches data from the given URL and decodes it using JSON parsing
+    // Console log statements are used for debugging purposes
     async function getData() {
       const response = await fetch("https://data.gov.bh/api/explore/v2.1/catalog/datasets/01-statistics-of-students-nationalities_updated/records?where=colleges%20like%20\"IT\"%20AND%20the_programs%20like%20\"bachelor\"&limit=100");
-      console.log(response);
-      console.log(response.ok);
-      console.log(response.status);
-      console.log(response.headers);
-      const data = await response.json();
+      console.log(response); // This will display full details of the information retrieved from the link without parsing
+      console.log(response.ok); // Returns boolean value
+      console.log(response.status); // Returns an integer value
+      console.log(response.headers); // Returns available methods to be called with this constant
+      const data = await response.json(); // With this line of code, the retrieved data have been parsed for better readability and usability
       console.log("Data retrieved from API link: ");
       console.log(data["results"]);
+      // This loop is retained within the script due to limitations in displaying results on the page
       for (let i = 0; i < data["results"].length; i++) {
+        // Each iteration of the loop adds a new row to the table below
         const myTable = document.getElementById('dataTables').innerHTML += `
            <tr class="fa-clipboard" data-clipboard-text="${data["results"][i]}">
             <td class="design">${data["results"][i]["year"]}</td>
@@ -29,21 +33,24 @@
             <td class="design">${data["results"][i]["number_of_students"]}</td>
            </tr>
         `;
+        // The function below helps to track the addition of rows to the HTML table
         console.log(myTable);
       }
     }
-    getData();
+    getData(); // This function call ensures that the JavaScript code runs immediately
   </script>
+  <!-- The webpage starts from this part of the code and ends with the script tag above this code -->
   <h1 style="text-align: center">Statistics about collected data of the university</h1><br>
+  <!-- This is the table that the javascript code above this file was looking for -->
   <div class="overflow-auto">
     <table id="dataTables" class="display">
       <tr class="fa-clipboard">
-        <th class="design">Year</th>
-        <th class="design">Semester</th>
-        <th class="design">College</th>
-        <th class="design">Nationality</th>
-        <th class="design">Program</th>
-        <th class="design">Number of students</th>
+        <th class="design">Year</th> <!-- First column is the academic year -->
+        <th class="design">Semester</th> <!-- Second column is the academic semester of that academic year -->
+        <th class="design">College</th> <!-- Third column is the college name of the university, but all rows have college name as "college of IT" anyway -->
+        <th class="design">Nationality</th> <!-- Fourth column identifies the nationality from the highest count of students' nationalities -->
+        <th class="design">Program</th> <!-- Fifth column is the description for the next column -->
+        <th class="design">Number of students</th> <!-- Sixth column is the result of the previous column and returns the students count -->
       </tr>
     </table>
   </div>
